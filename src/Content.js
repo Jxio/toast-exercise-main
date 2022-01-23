@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { fetchLikedFormSubmissions, onMessage } from './service/mockServer';
-import { Snackbar } from '@mui/material';
+import { Button, IconButton, Snackbar, SnackbarContent, Stack } from '@mui/material';
+import CloseIcon from "@mui/icons-material/Close";
 
 export default class Content extends Component {
   componentDidMount() {
@@ -13,19 +14,43 @@ export default class Content extends Component {
     // })
   }
   render() {
+    const submissions = this.props.submissions;
+    var snackBars = [];
+
+    for (var id of Object.keys(submissions)){
+      const action = (
+        <React.Fragment>
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={() => this.props.onDeleteChange(id)}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        </React.Fragment>
+      );
+
+      snackBars.push(<SnackbarContent
+                        key={id}
+                        open={true}
+                        message={submissions[id].firstName + ', ' +
+                          submissions[id].lastName+ '\n' +
+                          submissions[id].email}
+                        action={action}
+                      />);
+    }
+
     return <Box sx={{marginTop: 3}}>
               <Typography variant="h4">Liked Form Submissions</Typography>
 
               <Typography variant="body1" sx={{fontStyle: 'italic', marginTop: 1}}>
                 TODO: List of liked submissions here (delete this line)
               </Typography>
-              <Snackbar
-                open={true}
-                autoHideDuration={6000}
-                // onClose={handleClose}
-                message="Note archived"
-                // action={action}
-              />
+              <Stack spacing={1} className='notification-stack'>
+                {snackBars}
+              </Stack>
+
             </Box>;
   }
 }

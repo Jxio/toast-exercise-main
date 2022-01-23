@@ -8,9 +8,8 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 
-import { createMockFormSubmission } from './service/mockServer';
-
 export default class Header extends Component{
+
   render() {
     return <Box sx={{flexGrow: 1}}>
             <AppBar position="static">
@@ -30,7 +29,7 @@ export default class Header extends Component{
                   variant="contained"
                   size="small"
                   color="secondary"
-                  onClick={() => createMockFormSubmission()}
+                  onClick={() => this.props.onAddChange()}
                 >
                   New Submission
                 </Button>
