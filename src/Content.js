@@ -1,28 +1,54 @@
 import React, { Component } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { fetchLikedFormSubmissions, onMessage } from './service/mockServer';
+import { fetchLikedFormSubmissions, saveFormSubmission } from './service/mockServer';
 import { Button, IconButton, Snackbar, SnackbarContent, Stack } from '@mui/material';
 import CloseIcon from "@mui/icons-material/Close";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
 
 export default class Content extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      likes: []
+    }
+  }
   componentDidMount() {
-    // fetchLikedFormSubmissions().then((data) => {
-    //   console.log(data);
-      // formSubmissions: Array(1)
-      //   0: {id: 'e320efa6-929d-527f-905a-7114f5d0ace2', data: {…}}
-    // })
+    this.fetchLikedFormSubmissionsFunction();
+    this.interval = setInterval(() => this.fetchLikedFormSubmissionsFunction(), 5000);
+  }
+  fetchLikedFormSubmissionsFunction() {
+    fetchLikedFormSubmissions().then((data) => {
+      this.setState({likes: data.formSubmissions});
+    });
+  }
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
   render() {
     const submissions = this.props.submissions;
     var snackBars = [];
+    const likes = this.state.likes;
 
     for (var id of Object.keys(submissions)){
       var this_ = this;
       // eslint-disable-next-line no-loop-func
       (function(id){
+        const currentForm = {
+          id: id,
+          data: {
+            firstName: submissions[id].firstName,
+            lastName: submissions[id].lastName,
+            email: submissions[id].email,
+            liked: false,
+          },
+        };
         const action = (
           <React.Fragment>
+            <Button color="secondary" size="small" onClick={async () => {await saveFormSubmission(currentForm); this_.props.onDeleteChange(id)}}>
+              LIKE
+            </Button>
             <IconButton
               size="small"
               aria-label="close"
@@ -48,8 +74,15 @@ export default class Content extends Component {
     return <Box sx={{marginTop: 3}}>
               <Typography variant="h4">Liked Form Submissions</Typography>
 
-              <Typography variant="body1" sx={{fontStyle: 'italic', marginTop: 1}}>
-                TODO: List of liked submissions here (delete this line)
+              <Typography component={'span'} variant="body1" sx={{fontStyle: 'italic', marginTop: 1}}>
+                <List>
+                  {/* {likeList} */}
+                  {likes.map((item, index) => (
+                    <ListItem key={item.id}>
+                      {item.data.firstName} {item.data.lastName}: {item.data.email}
+                    </ListItem>
+                  ))}
+                </List>
               </Typography>
               <Stack spacing={1} className='notification-stack'>
                 {snackBars}

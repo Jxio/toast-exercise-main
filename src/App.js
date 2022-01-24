@@ -37,14 +37,12 @@ class App extends Component {
   }
 
   submissionsDeleteHandler (id) {
-    console.log(id)
     var subs = this.state.submissions;
     delete subs[id];
     this.setState({submissions: subs});
   }
 
   render() {
-    console.log(this.state.submissions)
     return <>
               <Header onAddChange={() => this.submissionsAddHandler()}/>
               <Container>
