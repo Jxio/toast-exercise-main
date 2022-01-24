@@ -46,7 +46,10 @@ export default class Content extends Component {
         };
         const action = (
           <React.Fragment>
-            <Button color="secondary" size="small" onClick={async () => {await saveFormSubmission(currentForm); this_.props.onDeleteChange(id)}}>
+            <Button color="secondary" size="small"
+              onClick={async () => {await saveFormSubmission(currentForm);
+                                    this_.props.onDeleteChange(id);
+                                    }}>
               LIKE
             </Button>
             <IconButton
@@ -76,6 +79,7 @@ export default class Content extends Component {
 
               <Typography component={'span'} variant="body1" sx={{fontStyle: 'italic', marginTop: 1}}>
                 <List>
+                  {/* {likeList} */}
                   {likes.map((item, index) => (
                     <ListItem key={item.id}>
                       {item.data.firstName} {item.data.lastName}: {item.data.email}
