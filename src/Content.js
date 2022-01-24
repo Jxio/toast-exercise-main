@@ -18,20 +18,23 @@ export default class Content extends Component {
     var snackBars = [];
 
     for (var id of Object.keys(submissions)){
-      const action = (
-        <React.Fragment>
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={() => this.props.onDeleteChange(id)}
-          >
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        </React.Fragment>
-      );
-
-      snackBars.push(<SnackbarContent
+      var this_ = this;
+      // eslint-disable-next-line no-loop-func
+      (function(id){
+        const action = (
+          <React.Fragment>
+            <IconButton
+              size="small"
+              aria-label="close"
+              color="inherit"
+              key={id}
+              onClick={() => this_.props.onDeleteChange(id)}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          </React.Fragment>
+        );
+        snackBars.push(<SnackbarContent
                         key={id}
                         open={true}
                         message={submissions[id].firstName + ', ' +
@@ -39,6 +42,7 @@ export default class Content extends Component {
                           submissions[id].email}
                         action={action}
                       />);
+      })(id)
     }
 
     return <Box sx={{marginTop: 3}}>
