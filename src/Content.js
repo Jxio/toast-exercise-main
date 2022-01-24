@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { fetchLikedFormSubmissions, saveFormSubmission } from './service/mockServer';
-import { Button, IconButton, Snackbar, SnackbarContent, Stack } from '@mui/material';
+import { Button, IconButton, SnackbarContent, Stack } from '@mui/material';
 import CloseIcon from "@mui/icons-material/Close";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -64,7 +64,7 @@ export default class Content extends Component {
                         key={id}
                         open={true}
                         message={submissions[id].firstName + ', ' +
-                          submissions[id].lastName+ '\n' +
+                          submissions[id].lastName+ ',\n' +
                           submissions[id].email}
                         action={action}
                       />);
@@ -76,7 +76,6 @@ export default class Content extends Component {
 
               <Typography component={'span'} variant="body1" sx={{fontStyle: 'italic', marginTop: 1}}>
                 <List>
-                  {/* {likeList} */}
                   {likes.map((item, index) => (
                     <ListItem key={item.id}>
                       {item.data.firstName} {item.data.lastName}: {item.data.email}
